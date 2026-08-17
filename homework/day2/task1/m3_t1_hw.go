@@ -27,5 +27,55 @@ In: 5 5 5 5 5     Out: CONSTANT
 
 package main
 
+import "fmt"
+func main() {
+	//Запрашиваем последовательность
+	var a, b, c, d, e int
+	fmt.Print("Введите 5 чисел: ")
+	fmt.Scan (&a, &b, &c, &d, &e)
+
+	chislo := []int{a, b, c, d, e}
+
+	// По умолчанию определяем все типы последовательности как true
+	constant := true
+	ascending := true
+	weaklyascending := true
+	descending := true
+	weaklydescending :=true
+
+	//Проверяем элементы для определения типа последовательности
+	for i := 0; i < len(chislo)-1; i++ {
+		if chislo[i] != chislo[i+1] {
+			constant = false
+		}
+		if chislo[i] >= chislo[i+1] {
+			ascending = false
+		}
+		if chislo[i] > chislo[i+1] {
+			weaklyascending = false
+		}
+		if chislo[i] <= chislo[i+1] {
+			descending = false
+		}
+		if chislo[i] < chislo[i+1] {
+			weaklydescending = false
+		}
+	}
+	// выводим тип последовательности
+	switch {
+	case constant:
+		fmt.Println("CONSTANT")
+	case ascending:
+		fmt.Println("ASCENDING")
+	case weaklyascending:
+		fmt.Println("WEAKLY ASCENDING")
+	case descending:
+		fmt.Println("DESCENDING")
+	case weaklydescending:
+		fmt.Println("WEAKLY DESCENDING")
+	default:
+		fmt.Println("RANDOM")
+	}
+}
 
 // Ваш код
