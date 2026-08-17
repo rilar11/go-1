@@ -10,7 +10,6 @@ package main
 import (
   "fmt"
   "os"
-  "strconv"
 )
 
 func main() {
@@ -29,14 +28,14 @@ if chislo < 100 || chislo > 999 {
   fmt.Println("Число должно быть в диаозоне от 100 до 999")
   os.Exit(1)
 }
+//Дробим число на цифры
+cifra1 := chislo / 100
+cifra2 := (chislo /10) % 10
+cifra3 := chislo % 10 
 
-// преобразуем в строку
-chislo_string := strconv.Itoa(chislo)
-inv_chislo := ""
-// Вертаем число
-for i := len(chislo_string) - 1; i >= 0; i-- {
-	inv_chislo += string(chislo_string[i])
-} 
+//Собираем ревёрс число
+inv_chislo := (cifra3 * 100) + (cifra2*10) + cifra1
 
-fmt.Printf ("Ревёрс числа : %v\n", inv_chislo)
+//Рисуем вывод
+fmt.Printf ("Ревёрс числа : %03d\n", inv_chislo)
 }
