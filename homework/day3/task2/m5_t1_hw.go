@@ -33,4 +33,78 @@
 */
 package main
 
-// Ваш код
+import (
+	"fmt"
+	"os"
+	"strings"
+)
+
+const digits = "0123456789"
+const lowercase = "abcdefghiklmnopqrstvxyz"
+const uppercase = "ABCDEFGHIKLMNOPQRSTVXYZ"
+const special = "_!@#$%^&"
+//функция проверки пароля
+func checkPassword (pass string) (bool, error) {
+	if len(pass) <= 8 || len(pass) >= 15 {
+		return false, fmt.Errorf("пароль должен иметь от 8 до 15 символов")
+	}
+	passwordContainsDigits := false
+	passwordContainsLowercase := false
+	passwordContainsUppercase := false
+	passwordContainsSpecial := false
+    //проходимся циклом по каждому символу и ищем его в одной из групп
+	for _,symb := range pass {
+	  withDigits := strings.ContainsRune(digits, symb)
+	  withLowercase := strings.ContainsRune(lowercase, symb)
+	  withUppercase := strings.ContainsRune(uppercase, symb)
+	  withSpecial := strings.ContainsRune(special, symb)	
+
+	  if withDigits {
+		passwordContainsDigits = true
+	  }
+	  if withLowercase {
+		passwordContainsLowercase = true
+	  }
+	  if withUppercase {
+		passwordContainsUppercase = true
+	  }
+	  if withSpecial {
+		passwordContainsSpecial = true
+	  }
+	}
+
+	if !passwordContainsDigits {
+		return false, fmt.Errorf("Введенный пароль должен содержать хотя бы одну цифру")
+	}
+	if !passwordContainsLowercase {
+		return false, fmt.Errorf("Введенный пароь должен содержать хотя бы одну букву низкого регистра")
+	}
+	if !passwordContainsUppercase {
+		return false, fmt.Errorf("Введеный пароль должен содержать хотя бы одну букву высокого регистра")
+	}
+	if !passwordContainsSpecial {
+		return false, fmt.Errorf("Введеный пароль должен содержать хотя бы один спецсимвол")
+	}
+	return true, nil
+}
+
+func main() {
+	var pass string
+	for i :=1; i <= 5; i++ {
+		fmt.Printf ("Попытка %d\n", i)
+		fmt.Print("Введите пароль: ")
+		_, err := fmt.Scan(&pass)
+		if err != nil {
+			fmt.Println("При вводе пароля возникла проблема: " , err)
+			continue
+		}
+		if check, errmsg := checkPassword(pass) ; check {
+			fmt.Println("Пароль принят")
+			os.Exit(0)
+		} else {
+			fmt.Println("Ошибка.", errmsg)
+		}
+	}
+
+	fmt.Println("Превышено максимально доступное число попыток ввода пароля.")
+}
