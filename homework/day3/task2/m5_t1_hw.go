@@ -45,8 +45,10 @@ const uppercase = "ABCDEFGHIKLMNOPQRSTVXYZ"
 const special = "_!@#$%^&"
 //функция проверки пароля
 func checkPassword (pass string) (bool, error) {
+	// создаём слайс для сбора всех проблем с паролем
+	var problems []string
 	if len(pass) <= 8 || len(pass) >= 15 {
-		return false, fmt.Errorf("пароль должен иметь от 8 до 15 символов")
+		problems = append(problems,fmt.Sprintf("пароль должен иметь от 8 до 15 симолов; ")) //заполняем слайс
 	}
 	passwordContainsDigits := false
 	passwordContainsLowercase := false
@@ -74,17 +76,22 @@ func checkPassword (pass string) (bool, error) {
 	}
 
 	if !passwordContainsDigits {
-		return false, fmt.Errorf("Введенный пароль должен содержать хотя бы одну цифру")
+		problems = append(problems,fmt.Sprintf("введенный пароль должен содержать хотя бы одну цифру; "))
 	}
 	if !passwordContainsLowercase {
-		return false, fmt.Errorf("Введенный пароь должен содержать хотя бы одну букву низкого регистра")
+		problems = append(problems,fmt.Sprintf("введенный пароль должен содержать хотя бы одну букву нижнего регистра; "))
 	}
 	if !passwordContainsUppercase {
-		return false, fmt.Errorf("Введеный пароль должен содержать хотя бы одну букву высокого регистра")
+		problems = append(problems,fmt.Sprintf("введенный пароль должен содержать хотя бы одну букву верхнего регистра; "))
 	}
 	if !passwordContainsSpecial {
-		return false, fmt.Errorf("Введеный пароль должен содержать хотя бы один спецсимвол")
+		problems = append(problems,fmt.Sprintf("введенный пароль должен содержать хотя бы один спецсимвол; "))
 	}
+	//Если в слайсе что-то есть, выводим это как ошибку
+    if len(problems) > 0 {
+		return false, fmt.Errorf("%s",problems)
+	}
+
 	return true, nil
 }
 
@@ -102,7 +109,7 @@ func main() {
 			fmt.Println("Пароль принят")
 			os.Exit(0)
 		} else {
-			fmt.Println("Ошибка.", errmsg)
+			fmt.Println("Пароль не соответствует требованиям: ", errmsg)
 		}
 	}
 
