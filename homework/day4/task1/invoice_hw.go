@@ -182,6 +182,7 @@ import (
 		phone := stringReader("Введите контактый телефон: ")
 		if err := invoice.setPhoneNumber(phone); err !=nil {
 			fmt.Println("Ошибка: ", err)
+			return
 		}
 
 		index := stringReader("Введите индекс: ")
